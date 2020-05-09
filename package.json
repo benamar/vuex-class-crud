@@ -1,7 +1,7 @@
 {
-  "name": "vuex-crud",
+  "name": "vuex-class-crud",
   "version": "1.0.0",
-  "description": "make rest api and graphQL very easy on vuejs",
+  "description": "make rest api (graphQL on next step) very easy on vuejs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Benamar BELARBI",
@@ -19,12 +19,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/benamar/vuex-crud.git"
+    "url": "https://github.com/benamar/vuex-class-crud.git"
   },
   "bugs": {
-    "url": "https://github.com/benamar/vuex-crud/issues"
+    "url": "https://github.com/benamar/vuex-class-crud/issues"
   },
-  "homepage": "https://github.com/benamar/vuex-crud",
+  "homepage": "https://github.com/benamar/vuex-class-crud",
   "devDependencies": {
     "@types/node": "^13.13.5",
     "@types/webpack-env": "^1.15.2",
