@@ -1,6 +1,6 @@
 {
   "name": "vuex-class-crud",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "make rest api (graphQL on next step) very easy on vuejs",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
