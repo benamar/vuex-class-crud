@@ -1,9 +1,15 @@
 /* eslint-disable */
-import {  namespace  } from 'vuex-class';
+import {namespace} from 'vuex-class';
+
 const crudModule = namespace('crud');
 
 export {IContent, IParam} from './IEntity';
-export {IApiConfig, IRouteConfig, IAction, IApiRoute, IApiRouteConfig} from './IApiRouteConfig';
+export {
+    IApiConfig, IRouteConfig, IAction,
+    IApiRoute, IApiRouteConfig, IEntityFunc,
+    IEntityObjFunc
+} from './IApiRouteConfig';
+
 export {Entity} from './Entity';
 export {register} from './storeCrud';
 // export {IRequestHandlerConf, IRequestHandler} from './RequestHandler';

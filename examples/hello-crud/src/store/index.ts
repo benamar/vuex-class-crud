@@ -21,6 +21,10 @@ const apiRoutes: IApiRouteConfig = {
       api: '/search/shows',
       initial: {},
     },
+    show: {
+      api: '/shows/{id}',
+      initial: {},
+    },
   },
 };
 register(store, apiRoutes);

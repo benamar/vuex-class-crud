@@ -10,10 +10,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Func, IContent, Var } from 'vuex-class-crud';
-import { IObject } from 'ts-utils2';
-
-export type IEntityFunc<O> = (content?: IContent) => Promise<O>;
+import { Func, Var, IEntityFunc, IObject} from 'vuex-class-crud';
 
 @Component
 export default class Show extends Vue {
