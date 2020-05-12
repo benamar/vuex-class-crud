@@ -124,17 +124,19 @@ export function createCrud(apiConfigRoutes: IApiRouteConfig) {
               store: any,
               data: any,
             ) {
-              console.log('vuex action', name, method, 'auth', store.auth);
-              let token: string = await apiConfigRoutes.authToken(store);
-              if (token) {
-                store.state.$instances[name].setAccessToken(token);
+              if(apiConfigRoutes.authToken) {
+                console.log('vuex action', name, method, 'auth', store.auth);
+                let token: string = await apiConfigRoutes.authToken(store);
+                if (token) {
+                  store.state.$instances[name].setAccessToken(token, apiConfigRoutes.authKey);
+                }
+              }
                 // @ts-ignore
                 const result = await store.state.$instances[name][method](data);
                 // if (commit) {
                 console.log('vuex action', name, method, result);
                 // }
                 return result;
-              }
             },
           };
         }
@@ -173,10 +175,13 @@ export function mapStore(apiConfigRoutes: IApiRouteConfig, store: any, moduleNam
 
 export function register(store: Store<any>, apiConfigRoutes: IApiRouteConfig, moduleName = 'crud') {
   const crud = createCrud(apiConfigRoutes);
-  console.log('register crud', crud);
+  console.log('register name', moduleName,'crud', crud);
   store.registerModule(moduleName, crud);
   const {state, actions} = mapStore(apiConfigRoutes, store, moduleName );
   console.log('component computed actions', actions);
   console.log('component computed state', state);
   return { state, actions };
+}
+export function isDevelopingAddon() {
+  return false;
 }

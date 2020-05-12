@@ -36,6 +36,7 @@ class RequestHandler implements IRequestHandler {
   private readonly withHeaders: boolean;
   private store: Store<any>;
   private readonly moduleName: string;
+  private authKey = 'Bearer';
 
   constructor(apiConf: IApiConfig, store: Store<any>, moduleName: string) {
     // prefix: string = '', location = `${process.env.VUE_APP_BACKEND_HOST}`, withHeaders = false
@@ -54,8 +55,9 @@ class RequestHandler implements IRequestHandler {
     });
   }
 
-  public setAccessToken(token: string | undefined) {
+  public setAccessToken(token: string | undefined, authKey= 'Bearer') {
     this.accessToken = token;
+    this.authKey = authKey;
   }
 
   public async exec(method: string, _config: IRequestHandlerConf)
@@ -65,8 +67,8 @@ class RequestHandler implements IRequestHandler {
 
   public async execute(_config: IRequestHandlerConf): Promise<IObject> {
     // inject the accessToken for each request
-    const Authorization = `Bearer ${this.accessToken}`;
-    const headers = { Authorization, ..._config.headers };
+    const Authorization = this.accessToken ?`${this.authKey} ${this.accessToken}`:undefined;
+    const headers = Authorization?{ Authorization, ..._config.headers }: _config.headers ;
     const config = { ..._config, headers };
     // console.log('received headers', config.headers,
     //  'reqHandler calling ', config.url, 'with params :', config);

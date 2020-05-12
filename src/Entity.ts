@@ -2,6 +2,7 @@ import RequestHandler from './RequestHandler';
 import { capitalize, IObject, waitObjectParamSet } from 'ts-utils2';
 import {  IApiRouteConfig } from './IApiRouteConfig';
 import { IContent, IParam } from './IEntity';
+import {Store} from "vuex";
 export const version = '1.0';
 export class Entity implements IObject {
   private readonly suffix: string;
@@ -9,7 +10,7 @@ export class Entity implements IObject {
   private readonly routeHeaders: any;
   private readonly apiHeaders: any;
   public state: any;
-  private store: any;
+  private store: Store<any>;
   public static formattedError(e: {
     response: { data: any; status: any };
     message: any;
@@ -35,7 +36,7 @@ export class Entity implements IObject {
   private readonly prefix?: string;
   private pageId: number;
   private readonly location: string = '';
-  private readonly needAuth = true;
+  private readonly needAuth = false;
   private withHeaders: any;
   private moduleName = 'crud/';
 
@@ -50,25 +51,25 @@ export class Entity implements IObject {
     const routeConfig = apiConfig.routes[name];
     this.store = store;
     this.urlPath = routeConfig.api;
-    this.location = routeConfig.location || apiConf?.location;
+    this.location = routeConfig.location || apiConf && apiConf.location;
     this.withHeaders = routeConfig.withHeaders;
     this.fetchFormat = routeConfig.fetchFormat;
-    this.needAuth = typeof routeConfig.needAuth !== 'undefined' ? routeConfig.needAuth : true;
-    this.prefix = typeof routeConfig.prefix !== 'undefined' ? routeConfig.prefix : apiConf?.prefix;
+    this.needAuth = typeof routeConfig.needAuth !== 'undefined' ? routeConfig.needAuth : false;
+    this.prefix = typeof routeConfig.prefix !== 'undefined' ? routeConfig.prefix : apiConf && apiConf.prefix;
     this.suffix = typeof routeConfig.suffix !== 'undefined' ? routeConfig.suffix : '';
     const { prefix, location, withHeaders } = this;
     this.reqHandler = new RequestHandler({ prefix, location, withHeaders }, store, this.moduleName);
     this.hasMoreItems = true;
     this.pageId = 0;
-    this.hooks.afterRequest = apiConf?.hooks.afterRequest;
+    this.hooks.afterRequest = apiConf && apiConf.hooks && apiConf.hooks.afterRequest;
     this.routeHeaders = routeConfig.headers;
-    this.apiHeaders = apiConf?.headers;
+    this.apiHeaders = apiConf && apiConf.headers;
     // this.fetch().then();
   }
 
-  public setAccessToken(token: string | undefined) {
+  public setAccessToken(token: string | undefined, authKey='Bearer') {
     this.accessToken = token;
-    this.reqHandler.setAccessToken(token);
+    this.reqHandler.setAccessToken(token, authKey);
   }
 
   public async fetch(content: IContent = {}): Promise<object> {

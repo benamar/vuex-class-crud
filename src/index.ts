@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {  namespace  } from 'vuex-class';
 const crudModule = namespace('crud');
 
