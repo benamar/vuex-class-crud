@@ -38,14 +38,31 @@ ms@2.0.0:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   integrity sha1-VgiurfwAvmwpAd9fmGF4jeDVl8g=
 
+rxjs@^6.5.5:
+  version "6.5.5"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.5.tgz#c5c884e3094c8cfee31bf27eb87e54ccfc87f9ec"
+  integrity sha512-WfQI+1gohdf0Dai/Bbmk5L5ItH5tYqm3ki2c5GdWhKjalzjg93N3avFjVStyZZz+A2Em+ZxKH5bNghw9UeylGQ==
+  dependencies:
+    tslib "^1.9.0"
+
 ts-utils2@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/ts-utils2/-/ts-utils2-1.0.7.tgz#b0bc538d6d7127ce105cbc6473f3b59dd0a0dd2f"
   integrity sha512-bJm2efpNhuZPX5fT1My+DD3QI7jwFOcQRSbYxQEH3WgUNp3auoZ+w8HUH66d2n/l1waRfe0wP3ItRwZG+9nL+w==
 
+tslib@^1.9.0:
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.13.0.tgz#c881e13cc7015894ed914862d276436fa9a47043"
+  integrity sha512-i/6DQjL8Xf3be4K/E6Wgpekn5Qasl1usyw++dAA35Ue5orEn65VIxOA+YvNNl9HV3qv70T7CNwjODHZrLwvd1Q==
+
 typescript@^3.x.x:
   version "3.8.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
+
+vue-class-component@^7.2.3:
+  version "7.2.3"
+  resolved "https://registry.yarnpkg.com/vue-class-component/-/vue-class-component-7.2.3.tgz#a5b1abd53513a72ad51098752e2dedd499807cca"
+  integrity sha512-oEqYpXKaFN+TaXU+mRLEx8dX0ah85aAJEe61mpdoUrq0Bhe/6sWhyZX1JjMQLhVsHAkncyhedhmCdDVSasUtDw==
 
 vue@^2.6.11:
   version "2.6.11"

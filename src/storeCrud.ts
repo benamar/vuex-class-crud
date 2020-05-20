@@ -1,8 +1,7 @@
-import { mapActions, mapState, Module, Store } from 'vuex';
-import { capitalize, clone, IObject, sleep } from 'ts-utils2';
+import {mapActions, mapState, Module, Store} from 'vuex';
+import {capitalize, clone, IObject, sleep} from 'ts-utils2';
 import Entity from './Entity';
-import { IApiRouteConfig } from './IApiRouteConfig';
-
+import {IApiRouteConfig} from './IApiRouteConfig';
 
 
 const methods: string[] = ['fetch', 'create', 'post', 'remove', 'patch', 'put'];
@@ -20,9 +19,9 @@ function transform(items: IObject[]) {
 }
 
 
-export function createCrud(apiConfigRoutes: IApiRouteConfig) {
+export function createCrud(apiConfigRoutes: IApiRouteConfig, mainStore: Store<any>, moduleName = 'crud') {
   const root = false;
-  const commitOptions = { root };
+  const commitOptions = {root};
   const crudStore: Module<any, any> = {
     namespaced: true,
     state: {$instances: {}}, mutations: {}, actions: {},
@@ -31,7 +30,7 @@ export function createCrud(apiConfigRoutes: IApiRouteConfig) {
     const cName = capitalize(name);
     const suffixes = [''];
     crudStore.state[name] = apiConfigRoutes.routes[name].initial;
-
+    // crudStore.state[name+'$'] = 1;
     if (Array.isArray(apiConfigRoutes.routes[name].initial)) {
       crudStore.state['mapped' + cName] = transform(apiConfigRoutes.routes[name].initial);
     }
@@ -42,7 +41,7 @@ export function createCrud(apiConfigRoutes: IApiRouteConfig) {
           _state: IObject,
           data: IObject | IObject[],
         ) => {
-           console.log('store set ', name + suffix, data);
+          // console.log('store set ', name + suffix, data);
           _state[name + suffix] = data;
           if (Array.isArray(data)) {
             _state['mapped' + cName] = transform(data as IObject[]);
@@ -53,7 +52,7 @@ export function createCrud(apiConfigRoutes: IApiRouteConfig) {
           _state: IObject,
           data: IObject,
         ) => {
-           console.log('store update ', name + suffix, data);
+          console.log('store update ', name + suffix, data);
           if (Array.isArray(data) && Array.isArray(_state[name + suffix])) {
             const currentItems = clone(_state[name + suffix]) as IObject[];
             for (let idx = 0; idx < data.length; idx++) {
@@ -62,7 +61,7 @@ export function createCrud(apiConfigRoutes: IApiRouteConfig) {
               for (let iCurrent = 0; iCurrent < currentItems.length; iCurrent++) {
                 const currentItem = currentItems[iCurrent];
                 if (currentItem.id + '' === newData.id + '') {
-                  currentItems[iCurrent] = { ...currentItem, ...newData };
+                  currentItems[iCurrent] = {...currentItem, ...newData};
                   found = true;
                 }
               }
@@ -72,7 +71,7 @@ export function createCrud(apiConfigRoutes: IApiRouteConfig) {
             }
             _state[name + suffix] = currentItems;
             if (Array.isArray(currentItems)) {
-              console.log('change mapped' + cName, transform(currentItems));
+              // console.log('change mapped' + cName, transform(currentItems));
               _state['mapped' + cName] = transform(currentItems);
             }
           } else {
@@ -88,11 +87,11 @@ export function createCrud(apiConfigRoutes: IApiRouteConfig) {
           crudStore.state[name + suffix] = false;
         }
         // actions['fetch' + cName + plural] = async ({commit, state}) => {
-         // console.log('create action ', "set" + cName + suffix);
+        // console.log('create action ', "set" + cName + suffix);
         crudStore.actions['set' + cName + suffix] = {
           root,
           handler: async (
-            { commit }: any,
+            {commit}: any,
             payload: any,
           ) => {
             // console.log('commit', 'set' + cName + suffix, payload);
@@ -104,7 +103,7 @@ export function createCrud(apiConfigRoutes: IApiRouteConfig) {
         crudStore.actions['update' + cName + suffix] = {
           root,
           handler: async (
-            { commit }: any,
+            {commit}: any,
             payload: any,
           ) => {
             // console.log('commit', 'update' + cName + suffix, payload);
@@ -118,46 +117,72 @@ export function createCrud(apiConfigRoutes: IApiRouteConfig) {
     if (apiConfigRoutes.routes[name].api) {
       for (const method of methods) {
         if (crudStore.actions) {
+          crudStore.state.$instances[name] = new Entity(apiConfigRoutes, name);
+          crudStore.state.$instances[name].setStore(mainStore);
+          crudStore.state[name+'$'] = crudStore.state.$instances[name].observable;
+
           crudStore.actions[method + cName] = {
             root,
-            handler: async function(
+            handler: async function (
               store: any,
               data: any,
             ) {
-              if(apiConfigRoutes.authToken) {
-                console.log('vuex action', name, method, 'auth', store.auth);
+              if(!store.state.$instances[name]){
+                // store.state.$instances[name] = new Entity(apiConfigRoutes, name);
+                // store.state.$instances[name].setStore(mainStore);
+                // store.state[name+'$'] = store.state.$instances[name].observable;
+              }
+              const instance = store.state.$instances[name];
+              if (apiConfigRoutes.authToken) {
+                // console.log('vuex action', name, method, 'auth', store.auth);
                 let token: string = await apiConfigRoutes.authToken(store);
                 if (token) {
-                  store.state.$instances[name].setAccessToken(token, apiConfigRoutes.authKey);
+                  instance.setAccessToken(token, apiConfigRoutes.authKey);
                 }
               }
-                // @ts-ignore
-                const result = await store.state.$instances[name][method](data);
-                // if (commit) {
-                console.log('vuex action', name, method, result);
-                // }
-                return result;
+              // @ts-ignore
+              const result = await instance[method](data);
+              // if (commit) {
+              // console.log('vuex action', name, method, result);
+              // }
+              return result;
             },
           };
+/*
+          crudStore.actions['get'+cName+'Observer'] = {
+            root,
+            handler: function (
+              store: any,
+              data: any,
+            ) {
+              if (store.state.$instances[name]) {
+                return store.state.$instances[name].observable;
+              }else{
+                console.error('internal error for observer')
+              }
+            }
+          }
+*/
         }
       }
     }
+
+
   });
 
-  console.log('->state:', crudStore.state);
-  console.log('->mutations:', crudStore.mutations);
-  console.log('->actions:', crudStore.actions);
+  // console.log('->state:', crudStore.state);
+  // console.log('->mutations:', crudStore.mutations);
+  // console.log('->actions:', crudStore.actions);
   return crudStore;
 }// store.registerModule('crudStore', crudStore);
-export function mapStore(apiConfigRoutes: IApiRouteConfig, store: any, moduleName : string) {
+
+export function mapStore(apiConfigRoutes: IApiRouteConfig, mainStore: any, moduleName: string) {
   const state: { [id: string]: any } = {};
   const actions: { [id: string]: any } = {};
 
   Object.keys(apiConfigRoutes.routes).forEach(name => {
     const cName = capitalize(name);
-    store.state[moduleName].$instances[name] = new Entity(apiConfigRoutes, store, name);
     state[name] = mapState([name, name + 'Errors', name + 'Success']);
-    store.state[moduleName].$instances[name].state = store.state;
     actions[name] = mapActions([
       'set' + cName,
       'fetch' + cName,
@@ -169,19 +194,12 @@ export function mapStore(apiConfigRoutes: IApiRouteConfig, store: any, moduleNam
     ]);
   });
 
-  return { state, actions };
+  return {state, actions};
 }
 
 
 export function register(store: Store<any>, apiConfigRoutes: IApiRouteConfig, moduleName = 'crud') {
-  const crud = createCrud(apiConfigRoutes);
-  console.log('register name', moduleName,'crud', crud);
-  store.registerModule(moduleName, crud);
-  const {state, actions} = mapStore(apiConfigRoutes, store, moduleName );
-  console.log('component computed actions', actions);
-  console.log('component computed state', state);
-  return { state, actions };
-}
-export function isDevelopingAddon() {
-  return false;
+  const crudObject = createCrud(apiConfigRoutes, store, moduleName);
+  console.log('registering module', moduleName, 'crud', crudObject);
+  store.registerModule(moduleName, crudObject);
 }

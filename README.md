@@ -1,5 +1,12 @@
 # vuex-class-crud
-make rest api or graphQL call very easy
+make rest api or graphQL call ridiculously easy on two line code.
+
+All crud operations are managed automatically and centralized to one source of truth with vuex.
+Everything remains still under developer control with advanced configuration and options.
+
+Making complex operation with multiple views interaction are made extremely simple.
+An Rx Observable is also provide to make complex synchronization call flows. 
+
 ##installation
 ```
 yarn add vuex-class-crud
@@ -12,7 +19,7 @@ npm install vuex-class-crud
 1) describe your api in a very simple format
 create file apiRoutes.ts and define your routes like this.
 ```typescript
-import { IApiRouteConfig } from 'vuex-class-crud';
+import { IApiRouteConfig, IObject } from 'vuex-class-crud'; 
 const apiRoutes: IApiRouteConfig = {
   config: {
     location: 'https://api.tvmaze.com',
@@ -28,10 +35,13 @@ const apiRoutes: IApiRouteConfig = {
     show: {
       api: '/shows/{id}',
       initial: {},
-        // to modify received body
-      fetchFormat: (body: any) => {
-          return {...body, receivedAt: new Date()}
-      }
+    },
+    walterWhite: {
+      // overrides global location
+      api: 'https://www.breakingbadapi.com/api/characters/1',
+      initial: {},
+      // to modify received body
+      fetchFormat: (body: IObject) => body[0],
     },
   },
 };
@@ -78,6 +88,7 @@ export default class Show extends Vue {
   @Func public fetchShow!: IEntityFunc<IObject>;
   @Func public deleteShow!: IEntityFunc<IObject>;
   @Func public addShow!: IEntityFunc<IObject>;
+  @Func public putShow!: IEntityFunc<IObject>;
   //...
   public async mounted() {
     const q = this.name;

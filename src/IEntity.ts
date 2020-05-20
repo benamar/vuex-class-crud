@@ -1,14 +1,15 @@
 import { IObject, IObjectIndexer } from 'ts-utils2';
 
-export interface IParam extends IObjectIndexer<any> {
+
+export interface IVParam extends IObjectIndexer<any> {
   input?: string;
   output?: string;
 }
 
 // # sourceMappingURL=IEntity.js.map
-export interface IContent extends IObjectIndexer<any> {
+export interface IVRequestOptions extends IObjectIndexer<any> {
   body?: any;
-  params?: IParam;
+  params?: IVParam;
   headers?: IObject;
   errCallback?: Function;
 }

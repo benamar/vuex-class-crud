@@ -1,5 +1,5 @@
 import { IObject, IObjectIndexer } from 'ts-utils2';
-import {IContent} from "../dist";
+import {IVRequestOptions} from "./IEntity";
 
 export { IObject } from 'ts-utils2';
 
@@ -33,5 +33,5 @@ export interface IApiRouteConfig extends IObjectIndexer<any> {
   routes: IApiRoute;
 }
 
-export type IEntityFunc<O> = (content?: IContent) => Promise<O>;
-export type IEntityObjFunc = (content?: IContent) => Promise<IObject>;
+export type IEntityFunc<O> = (content?: IVRequestOptions) => Promise<O>;
+export type IEntityObjFunc = (content?: IVRequestOptions) => Promise<IObject>;

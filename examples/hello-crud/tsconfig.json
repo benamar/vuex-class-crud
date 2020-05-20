@@ -18,7 +18,7 @@
       "@/*": [
         "src/*"
       ],
-      "vuex-class0-crud": ["../../"]
+      "_vuex-class-crud": ["../../dist"]
     },
     "lib": [
       "esnext",
