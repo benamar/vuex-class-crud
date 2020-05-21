@@ -41,9 +41,11 @@ import {
 export default class HelloCrudWorld extends Vue {
   @Prop() private msg!: string;
   @Var shows!: IObject;
+  @Var manga!: IObject;
   @Var walterWhite!: IObject;
   @Func fetchWalterWhite!: IEntityObjFunc;
   @Func fetchShows!: IEntityFunc<IObject>;
+  @Func fetchManga!: IEntityFunc<IObject>;
 
   public async created() {
     const query = { q: 'batman' };
@@ -52,6 +54,7 @@ export default class HelloCrudWorld extends Vue {
     console.log('breaking bad result', messages);
     console.log('first call received, now fetching shows');
     await this.fetchShows({ query });
+    await this.fetchManga({ variables: {id:15125} });
   }
 }
 </script>

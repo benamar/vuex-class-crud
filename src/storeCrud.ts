@@ -176,7 +176,7 @@ export function createCrud(apiConfigRoutes: IApiRouteConfig, mainStore: Store<an
   return crudStore;
 }// store.registerModule('crudStore', crudStore);
 
-export function mapStore(apiConfigRoutes: IApiRouteConfig, mainStore: any, moduleName: string) {
+export function mapStore(apiConfigRoutes: IApiRouteConfig) {
   const state: { [id: string]: any } = {};
   const actions: { [id: string]: any } = {};
 

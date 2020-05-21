@@ -35,6 +35,28 @@ const apiRoutes: IApiRouteConfig = {
       initial: {},
       fetchFormat: (body: IObject) => body[0],
     },
+    manga: {
+      api: 'https://graphql.anilist.co',
+      initial: {},
+      gql : `
+        query ($id: Int) { 
+          Media (id: $id, type: ANIME) {
+            id
+            title {
+              english
+              native
+            }
+            source,
+            type,
+            coverImage {
+              medium
+              large
+              color
+            } 
+          }
+        }
+      `
+    }
   },
 };
 register(store, apiRoutes);

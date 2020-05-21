@@ -19,6 +19,7 @@ export class Entity implements IObject {
   public observable: Observer<any> = this.subject.asObservable();
   private readonly afterRequest: ((content?: IObject) => void) | undefined;
   private readonly beforeRequest: ((content?: IObject) => void) | undefined;
+  private gql: string;
 
   public static formattedError(e: {
     response: { data: any; status: any };
@@ -63,6 +64,7 @@ export class Entity implements IObject {
     this.location = routeConfig.location || apiConf && apiConf.location;
     this.withHeaders = routeConfig.withHeaders;
     this.fetchFormat = routeConfig.fetchFormat;
+    this.gql = routeConfig.gql;
     this.needAuth = typeof routeConfig.needAuth !== 'undefined' ? routeConfig.needAuth : false;
     this.prefix = typeof routeConfig.prefix !== 'undefined' ? routeConfig.prefix : apiConf && apiConf.prefix;
     this.suffix = typeof routeConfig.suffix !== 'undefined' ? routeConfig.suffix : '';
@@ -119,7 +121,7 @@ export class Entity implements IObject {
       } else {
         // console.log('no need reauth');
       }
-      let { params, query, refresh, errorCallback, headers } = requestOptions;
+      let { params, query, refresh, errorCallback, headers, variables } = requestOptions;
       url = this.formatUrl(params, query);
       // console.log('fetch', url);
       if (this.cache[url] && !refresh) {
@@ -128,8 +130,18 @@ export class Entity implements IObject {
         const apiHeaders = await this.getHeaders();
         headers = { ...apiHeaders, ...headers };
         // console.log('---> fetch call ', url, 'with apiHeaders', apiHeaders);
-        const response = await this.execute(
-            { method: 'get', url, headers, errorCallback });
+        let response;
+        if(this.gql){
+          const data = {
+            variables,
+            query:this.gql
+          };
+           response = await this.execute(
+            { method: 'post', data, url, headers, errorCallback });
+        }else {
+            response = await this.execute(
+            {method: 'get', url, headers, errorCallback});
+        }
         // console.log('Entity', this.name, 'received ', url, response);
         if (this.fetchFormat) {
           // console.log('format fetch ..');;
@@ -274,14 +286,16 @@ export class Entity implements IObject {
         if (this.beforeRequest) {
           await this.beforeRequest(config);
         }
-      const req = await this.client(<AxiosRequestConfig>config);
+        console.log('REQUEST OPTION',config);
+      const response = await this.client(<AxiosRequestConfig>config);
         // console.log('check hooks', this.hooks.afterRequest);
         if (this.afterRequest) {
-          this.afterRequest(req);
+          this.afterRequest(response);
         }
-      const { data, headers } = req;
+      console.log('REQUEST RESPONSE',response);
+      const { data, headers } = response;
       if (this.withHeaders) {
-        return { data, headers, req };
+        return { data, headers, req: response };
       }
       return data;
     } catch (e)
