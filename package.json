@@ -1,6 +1,6 @@
 {
   "name": "vuex-class-crud",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "make rest api (graphQL on next step) very easy on vuejs",
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -33,7 +33,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "rxjs": "^6.5.5",
-    "ts-utils2": "^1.0.7",
+    "ts-utils2": "^1.0.8",
     "vue": "^2.6.11",
     "vue-class-component": "^7.2.3",
     "vuex": "^3.3.0",
