@@ -6,14 +6,15 @@
     "strict": true,
     "declaration": true,
     "sourceMap": true,
-    "types": ["node"
+    "types": [
+      "node"
     ],
     "lib": [
       "es5",
       "es6",
       "esnext",
       "dom",
-      "dom.iterable",
+      "dom.iterable"
     ]
   },
   "include": [

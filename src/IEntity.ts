@@ -1,5 +1,4 @@
-import { IObject, IObjectIndexer } from 'ts-utils2';
-
+import { IObject, IObjectIndexer } from 'ts-utils2'
 
 export interface IVParam extends IObjectIndexer<any> {
   input?: string;

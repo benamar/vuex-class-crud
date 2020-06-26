@@ -1,7 +1,7 @@
-import { IObject, IObjectIndexer } from 'ts-utils2';
-import {IVRequestOptions} from "./IEntity";
+import { IObject, IObjectIndexer } from 'ts-utils2'
+import { IVRequestOptions } from './IEntity'
 
-export { IObject } from 'ts-utils2';
+export { IObject } from 'ts-utils2'
 
 export interface IAction {
   data: any;

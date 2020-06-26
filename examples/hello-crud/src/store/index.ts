@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { IApiRouteConfig, IObject, register } from '../../../../dist';
+import {IApiRouteConfig, IObject, register} from '../../../../dist';
 
 Vue.use(Vuex);
 
@@ -38,7 +38,7 @@ const apiRoutes: IApiRouteConfig = {
     manga: {
       api: 'https://graphql.anilist.co',
       initial: {},
-      gql : `
+      gql: `
         query ($id: Int) { 
           Media (id: $id, type: ANIME) {
             id

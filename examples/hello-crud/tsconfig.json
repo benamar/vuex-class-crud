@@ -18,7 +18,9 @@
       "@/*": [
         "src/*"
       ],
-      "_vuex-class-crud": ["../../dist"]
+      "_vuex-class-crud": [
+        "../../dist"
+      ]
     },
     "lib": [
       "esnext",
@@ -35,6 +37,7 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules", "vuex-class-crud"
+    "node_modules",
+    "vuex-class-crud"
   ]
 }

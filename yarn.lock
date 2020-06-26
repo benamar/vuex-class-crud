@@ -45,10 +45,10 @@ rxjs@^6.5.5:
   dependencies:
     tslib "^1.9.0"
 
-ts-utils2@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/ts-utils2/-/ts-utils2-1.0.7.tgz#b0bc538d6d7127ce105cbc6473f3b59dd0a0dd2f"
-  integrity sha512-bJm2efpNhuZPX5fT1My+DD3QI7jwFOcQRSbYxQEH3WgUNp3auoZ+w8HUH66d2n/l1waRfe0wP3ItRwZG+9nL+w==
+ts-utils2@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/ts-utils2/-/ts-utils2-1.0.8.tgz#00e5ffbb6796e40aa3a113d11189d6fe0e4f4f8d"
+  integrity sha512-1xqn/r6boY2CTIzfgVX5c4EBufr5J5/dIHphTKR8hYKVdmXarH97/Os87z3nT2usOlavQnoTb8GeiXEqr9+71Q==
 
 tslib@^1.9.0:
   version "1.13.0"
